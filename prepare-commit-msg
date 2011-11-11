@@ -1,0 +1,25 @@
+#!/usr/bin/php
+<?php
+$SCRIPT = "prepare-commit-msg";
+require_once(realpath(dirname(__FILE__)) . '/bootstrap-hooks.php');
+
+echo PREFIX . "Try to insert revision number in commit message" . PHP_EOL;
+
+$ini = file_get_contents(PROJECT_DIR . '/application/configs/application.ini');
+preg_match('/app\.version\.major[^0-9]*([0-9.]*)/', $ini, $matches);
+$major = $matches[1];
+preg_match('/app\.version\.minor[^0-9]*([0-9.]*)/', $ini, $matches);
+$minor = $matches[1];
+preg_match('/app\.version\.revision[^0-9]*([0-9.]*)/', $ini, $matches);
+$revision = $matches[1];
+
+$file = PROJECT_DIR . $argv[1];
+$array = file($file);
+$new_string = "Revision $major.$minor.$revision\n";
+file_put_contents($file, $new_string);
+foreach($array as $line) {
+  file_put_contents($file, $line, FILE_APPEND);
+}
+
+
+echo PREFIX . ":D Revision number inserted in commit message" . PHP_EOL;

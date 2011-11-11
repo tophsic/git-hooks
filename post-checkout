@@ -1,0 +1,5 @@
+#!/usr/bin/php
+<?php
+$SCRIPT = "post-checkout";
+require_once(realpath(dirname(__FILE__)) . '/bootstrap-hooks.php');
+require_once(HOOK_DIR . '/update-revision.php');
